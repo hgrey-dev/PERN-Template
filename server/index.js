@@ -24,5 +24,5 @@ app.post("/player", async (req,res) => {
     } catch (err) {
         console.error(err.message);///not owrking at the moment..test with insomnia
     }
-    
+     
 })
