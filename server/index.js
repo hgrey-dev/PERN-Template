@@ -17,12 +17,27 @@ app.listen(5000,()=> {
 
 app.post("/player", async (req,res) => {
     try {
-        console.log(req.body);
-        // const { firstName, lastName }
-        // const newPlayer = await pool.query("INSERT INTO leader_board VALUES ($1)($2)"[firstName,lastName]);
-        // res.json(newPlayer)
+        // console.log(req.body);
+        const { firstName, lastName} = req.body
+        const newPlayer = await pool.query("INSERT INTO leader_board (first_name,last_name) VALUES ($1, $2) RETURNING *",[firstName,lastName]);
+        res.json(newPlayer.rows[0])
     } catch (err) {
         console.error(err.message);///not owrking at the moment..test with insomnia
-    }
-     
+    }  
+    
 })
+
+//get all players//
+app.get("/players", async (req,res) =>{
+    try {
+        const allPlayers = await pool.query("SELECT * FROM leader_board")
+    } catch (err) {
+        console.error(err.message)
+    }
+    
+})
+//get a player//
+
+//update a player//
+
+//delete a player//
