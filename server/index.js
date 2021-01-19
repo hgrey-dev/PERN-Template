@@ -31,13 +31,42 @@ app.post("/player", async (req,res) => {
 app.get("/players", async (req,res) =>{
     try {
         const allPlayers = await pool.query("SELECT * FROM leader_board")
+        res.json(allPlayers.rows)
     } catch (err) {
         console.error(err.message)
     }
     
 })
 //get a player//
-
+app.get("/player/:id", async (req,res) => {
+    try {
+        const { id } = req.params;
+        const player = await pool.query ("SELECT * FROM leader_board WHERE id = $1",[id])
+        res.json(player.rows)
+    } catch (error) {
+        console.error(err.message)
+    }
+})
 //update a player//
 
+app.put("/player/:id", async (req,res) => {
+    try {
+        const {  id } = req.params;
+        const { gamesPlayed } = req.body;
+        const updatePlayer = await pool.query("UPDATE leader_board SET games_played = $1 WHERE id = $2",[gamesPlayed, id])
+        res.json("Player updated!")
+    } catch (error) {
+        
+    }
+})
 //delete a player//
+
+app.delete("/player/:id", async (req,res) => {
+    try {
+        const { id } = req.params;
+        const deletePlayer = await pool.query("DELETE FROM leader_board WHERE id = $1",[id])
+        res.json("player deleted")
+    } catch (err) {
+        console.error(err.message) 
+    }
+})
